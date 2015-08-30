@@ -1,0 +1,16 @@
+#######################
+#  MAR 580: Advanced Population Modeling
+#  Fall 2015
+#  Gavin Fay
+#
+#  Lab 1: Linear regression example, data file
+#######################
+#
+# Number of data points
+6
+# X values
+1 2 2 5 3 4
+# Y values
+4 6 7 10 8 12
+
+
