@@ -1,0 +1,92 @@
+
+---
+output: 
+  pdf_document:
+    toc: false
+    highlight: default
+---
+#### MAR580: Advanced Population Modeling
+# Laboratory 1
+September 1, 2015
+
+Instructor: Gavin Fay, gfay@umassd.edu
+
+## Installation
+Install ADMB from <http://admb-project.org/downloads>  
+(For those not used to using the shell/command line, installing ADMB-IDE is highly recommended)
+
+## First Example: Linear Regression
+1. Open ```Lab1.tpl```
+
+2. Build the Lab1 program
+  + IDE users, click the 'Build' icon.
+  + Shell users, 
+  ```
+  admb Lab1
+  ```
+
+3. Run the Lab1 program
+  + IDE users, click the 'Run' icon.
+  + Shell users, either type
+  ```
+  Lab1
+  ```
+  (Windows), or
+  ```
+  ./Lab1
+  ```
+  (Linux/MacOS).
+
+4. View the output files ```Lab1.par```, ```Lab1.cor```, ```Lab1.std```
+
+5. Open the data file (```Lab1.dat```).
+
+6. Change or add some values. Save and close ```Lab1.dat```
+
+7. Re-run the ```Lab1``` program (step 3, you do not need to recompile).
+
+8. Add a '```cout```' statement to the ```PROCEDURE_SECTION``` of ```Lab1.tpl``` to view the predicted values during the estimation.
+```
+PROCEDURE_SECTION
+  ypred = a + b*x;
+  cout << ypred << endl;
+  obj_fun = norm2(y-ypred);
+```  
+Recompile the program, run it, and view the output.
+
+9. Add a ```REPORT_SECTION``` to ```Lab1.tpl``` to output the final estimated predicted values.
+```
+REPORT_SECTION
+  report << “y” << endl;
+  report << y << endl;
+  report << “ypred” << endl;
+  report << ypred << endl;
+```  
+Recompile the program, run it, and view the output.
+
+
+## Example 2: Weight-Length Relationships
+
+1. Create a new program that uses the values in wtlen.txt to estimate the weight-length relationship:
+$$W = a*L^b$$
+$$ln(W) = ln(a) + b*ln(L)$$
+Estimate using residual sums-of-squares on the logged weights.  
+Report the values for the parameters *a* and *b*.  
+**Hints:**
+Use ```Lab1.tpl``` as a starting point.
+You can add lines of C++ code to the ```DATA_SECTION``` to perform calculations on the data using ```!!```, e.g.
+```
+  !! log_weight = log(weight);
+```
+You can also add a ```PRELIMINARY_CALCS_SECTION``` before the ```PROCEDURE_SECTION``` to do this.
+
+2. Report the predicted values for Weight associated with Lengths ```1,2,3,....,20```.
+
+3. Estimate unique *a* parameters for each measured individual. i.e. fit the equation:
+$$ln(W_{i}) = ln(a_{i}) + b*ln(L)$$
+Compare the value for the objective function to that from the model with only 1 *a* parameter.  
+**Hints:**  
+Use a real vector rather than a real number for the *a* parameter.  
+Use a ```for``` loop to calculate the predicted values so you can index the right *a* parameter for each observation (bonus - do this using an ```ivector``` to index the relevant parameters instead of the loop).
+
+4. (bonus bonus) Modify your program to allow you to change between single or multiple *a* parameters through changes to the data file rather than having to change the ```.tpl``` file and recompile the program each time.
