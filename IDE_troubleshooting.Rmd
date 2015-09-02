@@ -1,0 +1,71 @@
+---
+title: 'ADMB-IDE Installation: Windows troubleshooting'
+author: "Gavin Fay, Robert Wildermuth"
+date: "09/02/2015"
+output:
+  pdf_document:
+    highlight: default
+  html_document: default
+  word_document: default
+---
+
+
+Some of you may be experiencing problems when installing the ADMB-IDE on Windows.
+You may find that Emacs does not recognize 'admb-mode'.
+
+After some sleuthing with the help of Robert, we identified the following issue.
+
+The default ADMB-IDE installation will work if you are logged in as an administrator during the install, **but**
+the relevant environment variables may not be set at the system level. This means that when you log on as another user
+(e.g. your UMDAR_username account) Emacs will not have pointers to the .emacs configuration file (which tells emacs about 'admb-mode'), the ADMB libraries, and perhaps also the GNU C++ compiler.
+
+The solution is to manually set your system environment variables to include the relevant paths. This sounds scary, but we will outline the procedure below.
+
+1. From the Desktop, right-click the Computer icon and select Properties. 
+If you don't have a Computer icon on your desktop, click the Start button, right-click the Computer option in the Start menu, and select Properties.
+
+2. Click the Advanced System Settings link in the left column. You may need to enter admin credentials to complete this step (SMAST users, email Robert, or Andre Schmidt if you don't know how to do this) 
+
+3. In the System Properties window, click on the Advanced tab, then click the Environment Variables button near the bottom of that tab.
+
+4. In the Environment Variables window, highlight the Path variable in the "System variables" section and click the Edit button.
+
+5. Modify the Path by adding the following to the end of the current path. Each different directory is separated with a semicolon. 
+```
+;C:/ADMB/admb112-gcc492-win64/bin;C:/gnu/GCC492-win64/bin;C:/gnu/GDB/bin;C:/gnu/EMACS/bin
+```  
+You may need to change the name of the ADMB and C compiler directories depending on the versions you have installed.
+(the above should work for ADMB-IDE 11.2)  
+Hit OK.
+
+6. You now need to create two new system variables, HOME and ADMB_HOME.
+
+7. In the Environment Variables window, highlight the Path variable in the "System variables" section and click the New button. In the 'Variable Name' entry, enter 
+```
+HOME
+```  
+In the 'Variable value' entry, enter 
+```
+C:/~
+```  
+Hit OK. This will now point Emacs to the configuration file that describes 'admb-mode'.
+
+8. In the Environment Variables window, highlight the Path variable in the "System variables" section and click the New button. In the 'Variable Name' entry, enter 
+```
+ADMB_HOME
+```  
+In the 'Variable value' entry, enter 
+```
+C:/ADMB/admb112-gcc492-win64
+```  
+replacing if necessary with the right directory name for your version of ADMB. Hit OK.
+
+9. Hit OK on the environment variables window, and again on the System Properties window.
+
+10. Check everything is working. You can dive right in by double-clicking on the simple.tpl file in the ADMB examples folder (or your own working directory copy of this). This should open up in the ADMB-IDE in Emacs and you should see that Emacs is in 'admb-mode' by seeing ADMB in the bottom margin of the main window. If 'admb-mode' is not enabled then the 'HOME' variable was not set up correctly.
+
+11. Hit the 'Build' icon. See whether the program compiles successfully.
+
+12. If the compilation fails (i.e. you don't get a 'Successfully built 'simple.exe' ' message) then the PATH was not updated correctly. look at what part of the compilation failed. If you get a 'admb is not recognized' message then the pointer to the admb binaries in the PATH is incorrect. Check the directory structure in the PATH system variable with the directory location of the admb binary files on your computer. If the error occurs during the call to gcc, check that the directory structure pointing to gcc binary files in the path (e.g. C:/gnu/GCC492-win64/bin) matches the directory structure on your computer.
+
+13. Hopefully, all this worked. Congratulations! If it didn't work or you have ideas for how this document could be improved, please let one of Gavin (gfay@umassd.edu) or Robert (rwildermuth@umassd.edu) know.
