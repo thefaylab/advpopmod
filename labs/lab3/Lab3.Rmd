@@ -1,0 +1,80 @@
+---
+output:
+  pdf_document:
+    highlight: default
+    toc: no
+  geometry: margin=1in
+  html_document:
+    toc: no
+---
+#### MAR580: Advanced Population Modeling
+## Laboratory 3
+September 15, 2015  
+Instructor: Gavin Fay, gfay@umassd.edu
+
+### First Example: Linear Mixed Effects Models using R (25 points)
+1. __Streams__ Run the R code in ```Lecture_03.r``` to fit the linear and mixed effects models to the streams data.  
+_Hint_ Be sure to set your working directory (```setwd()```) in R to the directory where you have saved the files in Lab3.zip  
+```r
+setwd('~/classes/advpopmod/labs/lab3/')
+library(nlme)
+Streams <- scan('streams.dat',what=list(Stream=0,Density=0),n=3*18,skip=5)
+streams.lm1 <- lm(Density~1,data=Streams)
+streams.lm2 <- lm(Density~factor(Stream)-1,data=Streams)
+streams.lme1 <- lme(Density~1,random=~1|Stream,data=Streams,meth="ML")
+```  
+  If you need help with the lme() or lm() functions you can get the documentation for the function using ```?(lme)```.  
+View the output from the mixed effects model using ```summary(streams.lme1)```.  
+Inspect the model fits and residuals using the diagnostic plots.
+
+2. __Weight-length relationships__  Using R, fit linear models to the weight-length data to replicate the ML analyses from weeks 1 and 2. e.g.
+```r
+WtLen <- scan('wtlen.txt',what=list(Subject=0,Length=0,Weight=0),n=3*100,skip=1)
+WtLen$LogLen <- log(WtLen$Length)
+WtLen$LogWt <- log(WtLen$Weight)
+# linear model, no individual parameters
+wtlen.lm1 <- lm(LogWt~LogLen,data=WtLen)
+# linear model, individual ln_a parameters
+wtlen.lm2 <- lm(LogWt~Subject+LogLen-1,data=WtLen)
+```  
+Now use ```lme()``` to fit mixed effects models to these data, treating either ln_a or b as a random effect by fish (subject).  
+Determine which of these models is 'best' using AIC.  
+For the best model, report the values (and confidence intervals) for the model parameters and random effects, and evaluate the model fits using plots of residuals, random effects, etc.  
+
+*******
+
+### Linear Mixed Effects Models using ADMB (35 points)
+3. __Streams__ Compile and run ```streams.tpl``` to fit the linear model of streams using AD Model Builder.  
+Modify ```streams.tpl``` to fit the mixed effects model for stream density using a ```random_effects_vector```. Compare the parameter estimates to those obtained in 1.
+
+4. __Weight-length relationships__ In ADMB, use maximum likelihood to fit a linear mixed effects model of the weight-length relationship assuming that the _ln(a)_ parameters for each fish are random effects.
+$$ln(W_{ij}) = ln(a_{i}) + b*ln(L_{ij}) + \epsilon_{ij} \text{ where } ln(a_{i}) \sim N(\mu_a,\sigma_a^2) \text{ and } \epsilon_{ij} \sim N(0,\sigma^2)$$  
+Report the estimated values for the mean and variance of the random effects, describing the hyperdistribution for the individual _ln(a)_'s.  
+Compare your results with those from 2.  
+_Hint:_ Use the solution from Lab 2 as a starting point.
+
+5. (Bonus)  Fit the same model in ADMB (or R) without using a ```random_effects_vector``` (or ```lme()```) by integrating over the random effects numerically.  
+_Hint:_ Calculate the value for the likelihood for each individual given fixed values for the random effect for that individual (create a vector of possible values using very small step size). Then weight these likelihoods by the probability for the random effects given the current value for the variance of the random effects.  
+
+*******
+
+### Meta-analysis of steepness, non-linear mixed effects model in ADMB (50 points)
+Using data from 11 stocks of Pacific rockfish, estimate the mean and variance for the steepness of the stock-recruit relationship for an 'unknown' stock.  (_sensu_ Dorn 2002; North American Journal of Fisheries Management 22: 280-300).  
+
+6. The Beverton-Holt stock-recruit relationship:  
+$$R = \frac{aS}{b + S}$$  
+can be re-parameterized in terms of the unfished recruitment $R_0$ and the "steepness" parameter _h_, where steepness is the fraction of $R_0$ obtained when spawning biomass is 20% that at the unfished level.  
+Using the above equation, derive the expression for the stock-recruitment relationship as a function of $R_0$, _h_, and $\phi_0$, the spawning biomass per recruit for an unfished stock.  
+
+7. Use ADMB to fit a random effects model to data for 11 west coast rockfish species treating _h_ as a random effect and $R_0$ as a (species-specific) fixed effect. Assume that the noise about the stock-recruit relationship is log-normal and that the magnitude of the variation about the stock-recruit relationship is the same for all species.  
+Estimate the values for $h_k$ for each stock _k_ using a logit transformation by making $\beta_k$ the estimated random effects, where:  
+$$\beta_{k} = log_{e} \left( \frac{h_k-0.2}{1-h_k} \right)  \text{   ,   } \beta_k \sim N(\mu_\beta,\sigma_\beta^2)$$  
+The data can be found in ```stockrecruit.dat``` , with the table of data containing stock assessment estimates of spawning biomass and  recruitment, the species codes, and modeled unfished spawning-biomass-per-recruit.  
+Report the estimate for the mean value for steepness of an unknown stock, as well as the estimates (and their variances) for the variance of the distribution for the stock-specific betas, and the values for $R_0$ and _h_ for each stock.  
+
+8. Plot the estimated stock-recruit relationships for each of the 11 stocks using the estimates of $R_0$ and _h_.  
+
+9. Comment on and evaluate the appropriateness of the approach. What are the key assumptions involved when fitting this model and how might these be violated? What might be added to the modeling approach to accomodate some of these caveats?  
+
+10. (Bonus)  Use the estimated means and (asymptotic) covariances for the parameters governing the distribution for $\beta$ to generate a predictive distribution for the steepness of an unknown rockfish stock.  Compare this distribution to the posterior distribution for $\beta$ obtained by Dorn (2002).  
+
