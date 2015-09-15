@@ -65,6 +65,6 @@ WtLen$LogWt <- log(WtLen$Weight)
 # linear model, no individual parameters
 wtlen.lm1 <- lm(LogWt~LogLen,data=WtLen)
 # linear model, individual ln_a parameters
-wtlen.lm2 <- lm(LogWt~Subject+LogLen-1,data=WtLen)
+wtlen.lm2 <- lm(LogWt~factor(Subject)+LogLen-1,data=WtLen)
 ## linear mixed effects models, lab exercise.
 
