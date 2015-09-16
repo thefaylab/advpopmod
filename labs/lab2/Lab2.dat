@@ -1,0 +1,25 @@
+#######################
+#  MAR 580: Advanced Population Modeling
+#  Fall 2015
+#  Gavin Fay & Steve Cadrin
+#
+#  Lab 2: MLE and mark-recapture
+#######################
+#
+# Number of phi parameters (1 or 2)
+2
+# Number of p paramters (1 or 2)
+2
+# Number of data points
+1
+# encounter history 111
+7
+# encounter history 110
+13
+# encounter history 101
+6
+# encounter history 100
+29
+
+
+

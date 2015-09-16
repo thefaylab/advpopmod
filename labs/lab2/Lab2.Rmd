@@ -1,0 +1,39 @@
+
+---
+output: 
+  pdf_document:
+    toc: false
+    highlight: default
+---
+#### MAR580: Advanced Population Modeling
+# Laboratory 2
+September 8, 2015
+
+Instructor: Steve Cadrin, scadrin@umassd.edu
+
+
+<!--- # M-R  single p and single phi
+## 1b  two phis two ps
+## 1c  two phis one p
+#AIC
+## 2a W-L MLE normal
+## 2b Lognormal
+--->
+
+
+## 1. Mark-Recapture Experiment
+a. Using ADMB, fit the 'single p & single phi' model described in Lecture to the data in the reading.
+
+b. (bonus) Fit a model with unique phi's and p's for each recapture.
+
+c. (bonus) Fit a model with unique phi's and a single p.
+
+d. (bonus) Compare the models in a-c using AIC. Which is the 'best' model? (lowest AIC) Is there sufficient evidence for one model over the others?
+
+## 2. Re-estimate Weight-Length relationships using maximum likelihood
+
+a. Re-fit the W-L relationship from Lab 1 using maximum likelihood, assuming normally distributed errors around the logged weights.  
+__Hint__ Change the objective function to the negative log of the normal likelihood. Create an additional estimated parameter to represent the variance of the estimation error.
+
+b. (bonus) Do this for the nonlinear case (raw weights and lengths) assuming lognormally distributed errors.
+
