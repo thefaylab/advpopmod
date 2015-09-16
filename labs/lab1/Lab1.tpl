@@ -21,3 +21,8 @@ PROCEDURE_SECTION
   ypred = a+b*x;
   obj_fun = norm2(y-ypred);
 
+REPORT_SECTION
+  report << "y" << endl;
+  report << y << endl;
+
+
