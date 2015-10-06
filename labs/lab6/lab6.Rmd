@@ -1,0 +1,46 @@
+
+---
+output:
+  pdf_document:
+    highlight: default
+    toc: no
+  geometry: margin=1in
+  html_document:
+    toc: no
+---
+#### MAR580: Advanced Population Modeling
+## Laboratory 6
+October 6, 2015  
+Instructor: Gavin Fay, gfay@umassd.edu
+
+### First Example: Linear univariate state-space model using the Kalman filter (30 points)
+1. __Exponential growth__ Run the R code in ```lab6.r``` to generate a simulated dataset for the exponential growth model. Estimate the state vector from this dataset using the ```kf()``` function based on the code from Newman et al. (2014) given the known parameter values. Find the negative log-likelihood associated with these estimates. Plot the resulting time series of the true state vector, the observations, and the filtered state estimates (bonus, show the variances on the plot).
+
+2. Use ```optim()``` to estimate the  values for the parameters of the model. Report the values for the parameter estimates.
+
+3. Repeat step 2. with 100 simulated versions of the observations (each of 30 timesteps). Store the results from each call to the estimation and plot histograms of the parameter estimates. What do these tell you about the ability to estimate the parameters of this model?
+
+4. Using the same Kalman filter procedure, fit the exponential growth model to Schnute's lingcod data (in ```lingcod.dat```).
+
+### Linear state-space model in ADMB, Gompertz model of lingcod (50 points) 
+5. Fit a state-space version of the Gompertz model of population dynamics to the abundance data for lingcod found in ```lingcod.dat``` (from Schnute 1994). The process equation for this model is:  
+$$B_{t+1} = B_t*e^{(r+\beta*ln(B_t))}*e^{(\eta_t - \tau^2/2)}$$  
+where $\eta_t~N(0,\tau^2)$.  
+Assume that the log-abundances are normally distributed around their predicted values with variance $\sigma^2$.  
+Rather than estimate as a model parameter, set the initial state to the model's stationary distribution.   
+_Hint_ For non-chaotic behavior, the density dependence parameter $\beta$ should be constrained to lie in the interval $-2<\beta<0$  (i.e. $-1<1+\beta<1$).  
+Report the parameter estimates (and variances) for the model.  
+Plot the fit of the model to the data.  
+Discuss the results in terms of what they mean for the estimated population dynamics.
+
+6. Conduct a likelihood profile over the observation error standard deviation (estimate the other parameters of the model keeping $\sigma$ fixed at a range of values around the MLE). Plot the change in negative log-likelihood with the fixed values for $\sigma$. Also plot the profile for the estimate for the process error standard deviation $\tau$. Compute a 95% confidence interval for $\sigma$ and comment on the implications of the likelihood profile for estimating these two variance parameters.
+
+7. (Bonus) Fit the Gompertz model to the lingcod data in R, using either the Kalman filter or the MARSS package. Compare the results with those from 5.
+
+### Non-linear state-space model, Schaefer biomass dynamics in ADMB (20 points) 
+8. The code in ```schaefer.tpl``` fits a state-space version of the Schaefer surplus production model used last week. Use this code to fit two versions of this model to the (single CPUE) South Atlantic Albacore data set:
+a. state-space model (process error and observation error estimated)  
+b. observation errror model (modify model to fix process error at a small value, say 0.001)  
+Plot the resulting model fits and biomass predictions. Compare the results of the models and the estimated confidence intervals. Discuss the implications for stock status and biomass dynamics for using a state-space version of this model.
+
+9. (Bonus) Modify ```schaefer.tpl``` to fit to the multiple CPUE time series used in week 5's assignment.  
