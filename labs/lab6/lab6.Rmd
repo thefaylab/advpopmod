@@ -33,7 +33,8 @@ Report the maximum likelihood estimates (and variances) for the model parameters
 Plot the fit of the model to the data.  
 Discuss the results in terms of what they mean for the estimated population dynamics.
 
-6. Conduct a likelihood profile over the observation error standard deviation (estimate the other parameters of the model keeping $\sigma$ fixed at a range of values around the MLE). Plot the change in negative log-likelihood with the fixed values for $\sigma$. Also plot the profile for the estimate for the process error standard deviation $\tau$. Compute a 95% confidence interval for $\sigma$ and comment on the implications of the likelihood profile for estimating these two variance parameters.
+6. Conduct a likelihood profile over the observation error standard deviation (estimate the other parameters of the model keeping $\sigma$ fixed at a range of values around the MLE). Plot the change in negative log-likelihood with the fixed values for $\sigma$. Also plot the profile for the estimate for the process error standard deviation $\tau$. Compute a 95% confidence interval for $\sigma$ and comment on the implications of the likelihood profile for estimating these two variance parameters.  
+_Hint_: Recall that you can force ADMB to not estimate a parameter by setting its phase to a negative number.  
 
 7. (Bonus) Fit the Gompertz model to the lingcod data in R, using either the Kalman filter or the MARSS package. Compare the results with those from 5.
 
