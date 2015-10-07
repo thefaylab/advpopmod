@@ -24,12 +24,12 @@ Instructor: Gavin Fay, gfay@umassd.edu
 
 ### Linear state-space model in ADMB, Gompertz model of lingcod (50 points) 
 5. Fit a state-space version of the Gompertz model of population dynamics to the abundance data for lingcod found in ```lingcod.dat``` (from Schnute 1994). The process equation for this model is:  
-$$B_{t+1} = B_t*e^{(r+\beta*ln(B_t))}*e^{(\eta_t - \tau^2/2)}$$  
-where $\eta_t~N(0,\tau^2)$.  
-Assume that the log-abundances are normally distributed around their predicted values with variance $\sigma^2$.  
-Rather than estimate as a model parameter, set the initial state to the model's stationary distribution.   
+$$B_{t+1} = B_t e^{(r+\beta*ln(B_t))} e^{\eta_t} \text{ where } \eta_t~N(0,\tau^2)$$  
+Assume that the log-abundances are normally distributed around their predicted values with variance $\sigma^2$. i.e., the observation model is:  
+$$ln(y_t) = ln(B_t) + \epsilon_t \text{ where } \epsilon_t \sim N(0,\sigma^2)$$ 
+Rather than estimate as a model parameter, set the initial state to the model's stationary distribution (i.e. value for $B_t$ when $B_{t+1}=B_t$).   
 _Hint_ For non-chaotic behavior, the density dependence parameter $\beta$ should be constrained to lie in the interval $-2<\beta<0$  (i.e. $-1<1+\beta<1$).  
-Report the parameter estimates (and variances) for the model.  
+Report the maximum likelihood estimates (and variances) for the model parameters: the growth rate ($r$), magnitude of density dependence ($\beta$), and the standard deviations for the process and observation error ($\tau$ & $\sigma$).  
 Plot the fit of the model to the data.  
 Discuss the results in terms of what they mean for the estimated population dynamics.
 
