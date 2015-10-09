@@ -12,6 +12,11 @@
 //
 // Code modified by James T. Thorson, 2014-07-29
 //
+// Code modified by Gavin Fay, Megan Winton, and Chris Rillahan, 2015-10-08
+//////// Commented out logU(1) = logU1 in Prelim_calcs, fix array index
+//////// Changed i-1 to i in looped call to step function in the process model, so that correct catch is applied (function already does Catch(i-1)).
+//////// Removed bounds on random_effects_vector. Added pin file and use -noinit flag when running.
+//
 ////////////////////////////////////////////////////////
 DATA_SECTION
 !!USER_CODE ad_comm::change_datafile_name("tuna.dat");
@@ -26,7 +31,8 @@ init_bounded_number logQ(-4.6,4.6);
 init_bounded_number K(10.0,2000.0);
 init_bounded_number logU1(0,6.9);
 
-random_effects_bounded_vector logU(2,N,0,6.9);
+//random_effects_bounded_vector logU(2,N,0,6.9);
+random_effects_vector logU(2,N);
 
 objective_function_value jnll;
 // derived quantities
@@ -44,7 +50,7 @@ PRELIMINARY_CALCS_SECTION
   logr0 = log(0.2);
   logQ = log(1);
   K = 500;
-  logU(1) = logU1;
+  //logU(1) = logU1;
   for(int i=2; i<=N; i++){
    logU(i) = log(80);
   }
@@ -65,7 +71,7 @@ PROCEDURE_SECTION
   // transition equation (Eq. 3)
   step(logU1,logU(2),logSdU,logr0,K,2);
   for(int i=3; i<=N; i++){
-  step(logU(i-1),logU(i),logSdU,logr0,K,i-1);
+  step(logU(i-1),logU(i),logSdU,logr0,K,i);
   }
   // observation equation (Eq. 4)
   obs( logQ, logSdU, logU1, 1);
