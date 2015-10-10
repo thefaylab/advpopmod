@@ -68,7 +68,7 @@ like.fn.2state.SSM <- function(par.vals,obs,gamma)
   Q=matrix(tau^2,nrow=1,ncol=1)
   B=matrix(gamma,nrow=1,ncol=1)
   R=matrix(sigma^2,nrow=1,ncol=1)
-  obs <- matrix(c(-1,y),nrow=1,ncol=1+length(y))
+  #obs <- matrix(c(-1,y),nrow=1,ncol=1+length(y))
   
   num.times  <- dim(obs)[2]-1  # time starts at 0
   num.states <- dim(Q)[1] 
