@@ -86,5 +86,17 @@ print(mle)
 ###### Schnute's lingcod
 nobs <- scan('lingcod.dat',n=1,skip=2)
 ling.data <- scan('lingcod.dat',n=nobs,skip=8)
+y <- ling.data
+A=matrix(lamda,nrow=1,ncol=1)
+Q=matrix(tau^2,nrow=1,ncol=1)
+B=matrix(gamma,nrow=1,ncol=1)
+R=matrix(sigma^2,nrow=1,ncol=1)
+#Put the observations in matrix form
+obs <- matrix(c(-1,y),nrow=1,ncol=1+length(y))
+
+param.vals.alt1 <- as.vector(c(300,1.01,3,3))
+like.fn.2state.SSM(param.vals.alt1,obs=obs,gamma=gamma)  
+mle <- optim(param.vals.alt1,,fn=like.fn.2state.SSM,
+             obs=obs,gamma=gamma)
 
 
